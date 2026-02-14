@@ -202,6 +202,8 @@
             cursor: pointer;
             transition: 0.15s;
             font-size: 1rem;
+            flex: 1 1 auto;
+            justify-content: center;
         }
 
         .btn-acao-topo i {
@@ -297,7 +299,7 @@
         }
 
         .grafico-container {
-            height: 200px;
+            height: 250px;
             position: relative;
         }
 
@@ -517,73 +519,129 @@
             cursor: not-allowed;
         }
 
-        /* Modal */
+        /* Modal - CORRIGIDO PARA MOBILE */
         .modal-overlay {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,20,40,0.7);
-            backdrop-filter: blur(5px);
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 20, 40, 0.8);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             display: none;
             align-items: center;
             justify-content: center;
             z-index: 1000;
+            padding: 16px;
         }
 
-        .modal-overlay.show { display: flex; }
+        .modal-overlay.show {
+            display: flex;
+        }
 
         .modal-container {
             background: white;
-            width: 95%;
-            max-width: 500px;
-            border-radius: 40px;
-            padding: 30px;
+            width: 100%;
+            max-width: 480px;
             max-height: 90vh;
+            border-radius: 40px;
+            padding: 28px 24px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
             overflow-y: auto;
-            box-shadow: 0 40px 70px rgba(0,0,0,0.3);
+            -webkit-overflow-scrolling: touch;
+            animation: modalFadeIn 0.3s ease;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
 
         .modal-container h3 {
             font-size: 1.8rem;
             color: #0e2e45;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
+            font-weight: 700;
         }
 
         .modal-campo {
-            margin-bottom: 18px;
+            margin-bottom: 20px;
         }
 
         .modal-campo label {
             font-weight: 600;
             color: #2b4a6e;
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
         }
 
-        .modal-campo input, .modal-campo select {
+        .modal-campo input,
+        .modal-campo select {
             width: 100%;
-            padding: 15px;
-            border: 2px solid #dbe4f0;
+            padding: 16px 18px;
+            border: 2px solid #e0e9f2;
             border-radius: 30px;
             font-size: 1rem;
+            background: #f9fcff;
+            transition: all 0.2s;
+        }
+
+        .modal-campo input:focus,
+        .modal-campo select:focus {
+            border-color: #1e6ec7;
+            outline: none;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(30, 110, 199, 0.1);
         }
 
         .modal-actions {
             display: flex;
-            gap: 15px;
-            margin-top: 30px;
+            gap: 12px;
+            margin-top: 32px;
+            flex-wrap: wrap;
         }
 
-        .btn-primary, .btn-secondary {
+        .btn-primary,
+        .btn-secondary {
             flex: 1;
-            padding: 16px;
+            min-width: 140px;
+            padding: 16px 20px;
             border: none;
             border-radius: 40px;
             font-weight: 700;
+            font-size: 1rem;
             cursor: pointer;
+            transition: all 0.2s;
         }
 
-        .btn-primary { background: #0f3b6a; color: white; }
-        .btn-secondary { background: #eef2f8; color: #1a3d5c; }
+        .btn-primary {
+            background: #0f3b6a;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1b4f86;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(15, 59, 106, 0.2);
+        }
+
+        .btn-secondary {
+            background: #eef2f8;
+            color: #1f3f5c;
+        }
+
+        .btn-secondary:hover {
+            background: #dbe4f0;
+            transform: translateY(-2px);
+        }
 
         @media (max-width: 600px) {
             .app-container { padding: 16px; }
@@ -591,6 +649,39 @@
             .user-area { padding: 8px 15px; }
             .btn-logout { padding: 8px 16px; }
             .graficos-grid { grid-template-columns: 1fr; }
+            .grafico-container { height: 220px; }
+            
+            .modal-container {
+                padding: 24px 20px;
+                max-height: 85vh;
+            }
+            
+            .modal-container h3 {
+                font-size: 1.5rem;
+                margin-bottom: 20px;
+            }
+            
+            .modal-campo input,
+            .modal-campo select {
+                padding: 14px 16px;
+            }
+            
+            .btn-primary,
+            .btn-secondary {
+                padding: 14px 16px;
+                min-width: 120px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .modal-actions {
+                flex-direction: column;
+            }
+            
+            .btn-primary,
+            .btn-secondary {
+                width: 100%;
+            }
         }
     </style>
 </head>
@@ -676,13 +767,13 @@
         <!-- GRÁFICOS -->
         <div class="graficos-grid">
             <div class="grafico-card">
-                <h3><i class="fas fa-chart-line" style="color:#28a745;"></i> Entradas por dia (mês atual)</h3>
+                <h3><i class="fas fa-chart-line" style="color:#28a745;"></i> Entradas por dia</h3>
                 <div class="grafico-container">
                     <canvas id="graficoEntradasDia"></canvas>
                 </div>
             </div>
             <div class="grafico-card">
-                <h3><i class="fas fa-chart-line" style="color:#dc3545;"></i> Saídas por dia (mês atual)</h3>
+                <h3><i class="fas fa-chart-line" style="color:#dc3545;"></i> Saídas por dia</h3>
                 <div class="grafico-container">
                     <canvas id="graficoSaidasDia"></canvas>
                 </div>
@@ -761,7 +852,7 @@
         </div>
     </div>
 
-    <!-- MODAL -->
+    <!-- MODAL CORRIGIDO -->
     <div id="modalOverlay" class="modal-overlay">
         <div class="modal-container" id="modalContainer">
             <h3 id="modalTitulo">Título</h3>
@@ -792,29 +883,29 @@
     // Criar movimentos com datas variadas para testar gráficos
     let movimentos = [];
     
-    // Função para gerar data aleatória nos últimos 30 dias
-    function gerarDataAleatoria(diasAtrasMax = 30) {
+    // Função para gerar data aleatória nos últimos 60 dias
+    function gerarDataAleatoria() {
         const data = new Date();
-        data.setDate(data.getDate() - Math.floor(Math.random() * diasAtrasMax));
+        data.setDate(data.getDate() - Math.floor(Math.random() * 60));
         return data;
     }
 
-    // Gerar 30 movimentos aleatórios para teste
-    for (let i = 1; i <= 30; i++) {
+    // Gerar 50 movimentos aleatórios para teste
+    for (let i = 1; i <= 50; i++) {
         const produtoId = Math.floor(Math.random() * 10) + 1;
         const tipo = Math.random() > 0.5 ? 'entrada' : 'saida';
-        const quantidade = Math.floor(Math.random() * 20) + 1;
+        const quantidade = Math.floor(Math.random() * 15) + 1;
         movimentos.push({
             id: i,
             produto_id: produtoId,
             tipo: tipo,
             quantidade: quantidade,
-            created_at: gerarDataAleatoria(60) // Últimos 60 dias
+            created_at: gerarDataAleatoria()
         });
     }
 
     let nextProdutoId = 11;
-    let nextMovimentoId = 31;
+    let nextMovimentoId = 51;
 
     // ================= CONTROLE DE LOGIN =================
     const USUARIO_VALIDO = 'carlos';
@@ -929,7 +1020,7 @@
         });
     }
 
-    // ================= GRÁFICOS CORRIGIDOS =================
+    // ================= GRÁFICOS COM RÓTULOS =================
     function atualizarGraficos() {
         const movimentosFiltrados = filtrarMovimentos();
         const agora = new Date();
@@ -946,10 +1037,8 @@
             return m.created_at.getMonth() === mesAtual && m.created_at.getFullYear() === anoAtual;
         });
 
-        console.log('Movimentos do mês atual:', movimentosMesAtual.length); // Debug
-
         movimentosMesAtual.forEach(m => {
-            const dia = m.created_at.getDate() - 1; // Array começa em 0
+            const dia = m.created_at.getDate() - 1;
             if (dia >= 0 && dia < diasNoMes) {
                 if (m.tipo === 'entrada') {
                     entradasPorDia[dia] += m.quantidade;
@@ -958,9 +1047,6 @@
                 }
             }
         });
-
-        console.log('Entradas por dia:', entradasPorDia); // Debug
-        console.log('Saídas por dia:', saidasPorDia); // Debug
 
         // Dados para gráfico mensal (últimos 6 meses)
         const meses = [];
@@ -986,21 +1072,17 @@
             saidasMensal.push(totalSaidas);
         }
 
-        console.log('Meses:', meses); // Debug
-        console.log('Entradas mensal:', entradasMensal); // Debug
-        console.log('Saídas mensal:', saidasMensal); // Debug
-
-        // Destruir gráficos existentes se houver
+        // Destruir gráficos existentes
         if (graficoEntradas) graficoEntradas.destroy();
         if (graficoSaidas) graficoSaidas.destroy();
         if (graficoComparativo) graficoComparativo.destroy();
 
-        // Criar gráfico de entradas por dia
+        // Criar gráfico de entradas por dia com rótulos
         const ctxEntradas = document.getElementById('graficoEntradasDia').getContext('2d');
         graficoEntradas = new Chart(ctxEntradas, {
             type: 'line',
             data: {
-                labels: Array.from({ length: diasNoMes }, (_, i) => i + 1),
+                labels: Array.from({ length: diasNoMes }, (_, i) => `Dia ${i + 1}`),
                 datasets: [{
                     label: 'Quantidade de entradas',
                     data: entradasPorDia,
@@ -1011,31 +1093,53 @@
                     pointBackgroundColor: '#28a745',
                     pointBorderColor: '#fff',
                     pointBorderWidth: 2,
-                    pointRadius: 4
+                    pointRadius: 4,
+                    pointHoverRadius: 6
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
-                    legend: { display: false },
-                    tooltip: { enabled: true }
+                    legend: { 
+                        display: true,
+                        position: 'top',
+                        labels: { usePointStyle: true }
+                    },
+                    tooltip: { 
+                        enabled: true,
+                        callbacks: {
+                            label: function(context) {
+                                return `Entradas: ${context.raw}`;
+                            }
+                        }
+                    }
                 },
                 scales: {
                     y: {
                         beginAtZero: true,
-                        grid: { color: 'rgba(0,0,0,0.05)' }
+                        grid: { color: 'rgba(0,0,0,0.05)' },
+                        title: {
+                            display: true,
+                            text: 'Quantidade'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Dias do mês'
+                        }
                     }
                 }
             }
         });
 
-        // Criar gráfico de saídas por dia
+        // Criar gráfico de saídas por dia com rótulos
         const ctxSaidas = document.getElementById('graficoSaidasDia').getContext('2d');
         graficoSaidas = new Chart(ctxSaidas, {
             type: 'line',
             data: {
-                labels: Array.from({ length: diasNoMes }, (_, i) => i + 1),
+                labels: Array.from({ length: diasNoMes }, (_, i) => `Dia ${i + 1}`),
                 datasets: [{
                     label: 'Quantidade de saídas',
                     data: saidasPorDia,
@@ -1046,26 +1150,48 @@
                     pointBackgroundColor: '#dc3545',
                     pointBorderColor: '#fff',
                     pointBorderWidth: 2,
-                    pointRadius: 4
+                    pointRadius: 4,
+                    pointHoverRadius: 6
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
-                    legend: { display: false },
-                    tooltip: { enabled: true }
+                    legend: { 
+                        display: true,
+                        position: 'top',
+                        labels: { usePointStyle: true }
+                    },
+                    tooltip: { 
+                        enabled: true,
+                        callbacks: {
+                            label: function(context) {
+                                return `Saídas: ${context.raw}`;
+                            }
+                        }
+                    }
                 },
                 scales: {
                     y: {
                         beginAtZero: true,
-                        grid: { color: 'rgba(0,0,0,0.05)' }
+                        grid: { color: 'rgba(0,0,0,0.05)' },
+                        title: {
+                            display: true,
+                            text: 'Quantidade'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Dias do mês'
+                        }
                     }
                 }
             }
         });
 
-        // Criar gráfico comparativo mensal
+        // Criar gráfico comparativo mensal com rótulos
         const ctxComparativo = document.getElementById('graficoComparativoMensal').getContext('2d');
         graficoComparativo = new Chart(ctxComparativo, {
             type: 'bar',
@@ -1095,12 +1221,29 @@
                     legend: { 
                         position: 'top',
                         labels: { usePointStyle: true }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return `${context.dataset.label}: ${context.raw} unidades`;
+                            }
+                        }
                     }
                 },
                 scales: {
                     y: {
                         beginAtZero: true,
-                        grid: { color: 'rgba(0,0,0,0.05)' }
+                        grid: { color: 'rgba(0,0,0,0.05)' },
+                        title: {
+                            display: true,
+                            text: 'Quantidade'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Meses'
+                        }
                     }
                 }
             }
@@ -1113,7 +1256,6 @@
         renderizarMovimentos();
         atualizarKPIsGerais();
         carregarFiltros();
-        // Aguardar um pequeno momento para garantir que o DOM esteja pronto
         setTimeout(() => {
             atualizarGraficos();
         }, 100);
@@ -1283,7 +1425,7 @@
         }
     };
 
-    // ================= MODAIS =================
+    // ================= MODAIS CORRIGIDOS =================
     const modalOverlay = document.getElementById('modalOverlay');
     const modalTitulo = document.getElementById('modalTitulo');
     const modalCorpo = document.getElementById('modalCorpo');
@@ -1298,13 +1440,27 @@
         produtoEditandoId = produto ? produto.id : null;
         modalTitulo.innerText = produto ? 'Editar Produto' : 'Novo Produto';
         modalCorpo.innerHTML = `
-            <div class="modal-campo"><label>Nome</label><input id="modalProdNome" value="${produto?.nome || ''}" placeholder="Ex: Monitor LED"></div>
-            <div class="modal-campo"><label>Descrição</label><input id="modalProdDesc" value="${produto?.descricao || ''}" placeholder="Opcional"></div>
-            <div class="modal-campo"><label>Preço (R$)</label><input id="modalProdPreco" type="number" step="0.01" value="${produto?.preco || ''}" placeholder="0.00"></div>
-            <div class="modal-campo"><label>Quantidade</label><input id="modalProdQtd" type="number" value="${produto?.quantidade || 0}" placeholder="0"></div>
+            <div class="modal-campo">
+                <label>Nome</label>
+                <input id="modalProdNome" value="${produto?.nome || ''}" placeholder="Ex: Monitor LED">
+            </div>
+            <div class="modal-campo">
+                <label>Descrição</label>
+                <input id="modalProdDesc" value="${produto?.descricao || ''}" placeholder="Opcional">
+            </div>
+            <div class="modal-campo">
+                <label>Preço (R$)</label>
+                <input id="modalProdPreco" type="number" step="0.01" value="${produto?.preco || ''}" placeholder="0.00">
+            </div>
+            <div class="modal-campo">
+                <label>Quantidade</label>
+                <input id="modalProdQtd" type="number" value="${produto?.quantidade || 0}" placeholder="0">
+            </div>
         `;
         modalSalvar.onclick = salvarProduto;
         modalOverlay.classList.add('show');
+        // Garantir que o modal fique visível e scrollável no mobile
+        document.body.style.overflow = 'hidden';
     };
 
     window.editarProduto = (id) => {
@@ -1356,8 +1512,14 @@
 
         let options = produtos.map(p => `<option value="${p.id}">${p.nome} (estoque: ${p.quantidade})</option>`).join('');
         modalCorpo.innerHTML = `
-            <div class="modal-campo"><label>Produto</label><select id="modalMovProduto">${options}</select></div>
-            <div class="modal-campo"><label>Quantidade</label><input id="modalMovQtd" type="number" value="${movimento?.quantidade || 1}" min="1"></div>
+            <div class="modal-campo">
+                <label>Produto</label>
+                <select id="modalMovProduto">${options}</select>
+            </div>
+            <div class="modal-campo">
+                <label>Quantidade</label>
+                <input id="modalMovQtd" type="number" value="${movimento?.quantidade || 1}" min="1">
+            </div>
             <input type="hidden" id="modalMovTipo" value="${tipoMov}">
         `;
         if (movimento) {
@@ -1365,6 +1527,7 @@
         }
         modalSalvar.onclick = salvarMovimento;
         modalOverlay.classList.add('show');
+        document.body.style.overflow = 'hidden';
     };
 
     window.editarMovimento = (id) => {
@@ -1464,7 +1627,22 @@
     window.fecharModal = () => {
         modalOverlay.classList.remove('show');
         modalCorpo.innerHTML = '';
+        document.body.style.overflow = '';
     };
+
+    // Fechar modal ao clicar no overlay
+    modalOverlay.addEventListener('click', function(e) {
+        if (e.target === modalOverlay) {
+            fecharModal();
+        }
+    });
+
+    // Fechar modal com tecla ESC
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && modalOverlay.classList.contains('show')) {
+            fecharModal();
+        }
+    });
 </script>
 </body>
 </html>
